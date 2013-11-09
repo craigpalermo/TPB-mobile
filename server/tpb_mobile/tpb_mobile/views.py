@@ -61,8 +61,22 @@ class SettingsView(View):
     template_name = 'settings.html'
     
     def get(self, request, *args, **kwargs):
-        return render(request, 'settings.html')
+        try:
+            profile = UserProfile.objects.get(user=request.user)
+            client_id = profile.client_id
+        except:    
+            client_id = "Not logged in"
+        return render(request, 'settings.html', {'client_id': client_id})
     
+    def post(self, request, *args, **kwargs):
+        try:
+            profile = UserProfile.objects.get(user=request.user)
+            client_id = request.POST.get('client_id')
+            profile.client_id = client_id
+            profile.save()
+        except:
+            client_id = "Error retrieving client ID"
+        return render(request, 'settings.html', {'client_id': client_id})
 
 class RegistrationView(View):
     '''    

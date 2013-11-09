@@ -5,6 +5,13 @@
 
 {% block content %}
 
-<h1>Settings Page Goes Here</h1>
+<p><strong>Your Client Id:</strong></p>
+<p>{{ client_id }}</p>
+
+<form action="{% url settings %}" method="post">
+	{% csrf_token %}
+	<input type='text' placeholder='New Client ID' name='client_id' /><br />
+	<input type="submit" value="Update" />
+</form>
 
 {% endblock %}

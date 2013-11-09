@@ -14,8 +14,9 @@ class LoginView(View):
     def post(self, request, *args, **kwargs):
         result = attempt_login(request)
         if result['status'] == True:
-            next_url = request.POST.get('next', default=None)
-            if next:
+            next_url = request.POST.get('next')
+            return HttpResponseRedirect('/')
+            if next != "None":
                 return HttpResponseRedirect(next_url)
             else:
                 return HttpResponseRedirect('/')
