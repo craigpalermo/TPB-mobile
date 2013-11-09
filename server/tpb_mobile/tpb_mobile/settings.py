@@ -133,7 +133,8 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.admin',
     'tpb_mobile',
-    'south'
+    'south',
+    'django_extensions'
 )
 
 # A sample logging configuration. The only tangible logging

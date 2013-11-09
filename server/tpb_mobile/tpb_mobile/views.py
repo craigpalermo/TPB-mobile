@@ -1,12 +1,15 @@
 from django.shortcuts import render
 from django.views.generic.base import View
-from forms import SearchForm, TorrentForm
+from django.template import RequestContext
+from forms import SearchForm, TorrentForm, UserForm
 from utils import match_category
 from tpb import TPB
 from tpb import CATEGORIES, ORDERS
-from models import Torrent
+from django.contrib.auth.models import User
+from models import Torrent, UserProfile
 import settings
 from django.http import HttpResponseRedirect
+
 
 class SearchView(View):
     '''
@@ -60,3 +63,35 @@ class QueueView(View):
             return render(request, self.template_name, {'queue': queue, 
                                                         'logged_in': request.user.is_authenticated(),
                                                         'username': username})           
+
+class RegistrationView(View):
+    '''    
+    form for new users to register
+    '''
+    form_class = UserForm
+    template_name = 'registration/register.html'
+    
+    def get(self, request, *args, **kwargs):
+        form = self.form_class()
+        return render(request, self.template_name, {'form': form})
+    
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            cd = form.cleaned_data
+            user = User()
+            
+            user.username = cd['username']    
+            user.email = cd['email']
+            user.password = cd['password']
+            user.save()
+            
+            # create UserProfile
+            profile = UserProfile()
+            profile.user = user
+            profile.save()
+                
+            return HttpResponseRedirect('/')
+
+        return render(request, self.template_name, {'form': form}, context_instance = RequestContext(request))
+    

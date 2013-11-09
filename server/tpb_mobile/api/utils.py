@@ -1,7 +1,6 @@
 from tpb_mobile.forms import TorrentForm
 from django.http import HttpResponse, HttpResponseRedirect
-from django.contrib.auth.models import User
-from tpb_mobile.models import Torrent
+from tpb_mobile.models import Torrent, UserProfile
 import json
 import tpb_mobile.settings as s
 
@@ -23,18 +22,26 @@ def delete_torrent_record(request, torrent_id):
     except:
         pass
 
-def retrieve_queue(request, user_id):
+def retrieve_queue(request, uuid, client_id):
     '''
     runs a query to get all torrent records linked to user that matches user_id,
     then serializes the resulting queryset as json and returns it
     '''
-    user = User.objects.get(id=user_id)
-    records = Torrent.objects.filter(user=user)
-    
-    for i in records:
-        i.status = s.DOWNLOADED
-        i.save()
+    try:
+        profile = UserProfile.objects.get(uuid=uuid)
         
-    response_data = records.values()
-    response = json.dumps([dict(id=record) for record in response_data])
+        if profile.client_id == client_id:
+            records = Torrent.objects.filter(user=profile.user)
+            
+            for i in records:
+                i.status = s.DOWNLOADED
+                i.save()
+                
+            response_data = records.values()
+            response = json.dumps([dict(id=record) for record in response_data])
+        else:
+            response = "-1"
+    except:
+        response = "-1"
+        
     return HttpResponse(response, content_type="application/json")
