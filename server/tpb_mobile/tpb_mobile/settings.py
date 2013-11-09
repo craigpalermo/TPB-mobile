@@ -3,6 +3,10 @@ import os
 
 TPB_URL = "https://thepiratebay.sx"
 
+# status constants for torrent records in queue
+WAITING = 0
+DOWNLOADED = 1
+
 PROJECT_PATH = os.path.realpath(os.path.dirname(__file__))
 SITE_ROOT = ''
 

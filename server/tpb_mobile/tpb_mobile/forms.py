@@ -15,4 +15,4 @@ class SearchForm(forms.Form):
 class TorrentForm(ModelForm):
     class Meta:
             model = Torrent
-            fields = ['title', 'url', 'magnet_link', 'torrent_link', 'size']
+            fields = ['title', 'url', 'magnet_link', 'torrent_link', 'size', 'seeders']
