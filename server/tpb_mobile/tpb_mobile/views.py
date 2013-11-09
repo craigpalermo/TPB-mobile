@@ -19,12 +19,8 @@ class SearchView(View):
     form_class = SearchForm
     
     def get(self, request, *args, **kwargs):
-        form = self.form_class()
-        username = request.user.username if request.user.is_authenticated() else None
-          
-        return render(request, self.template_name, {'form': form, 'results': None,
-                                                    'logged_in': request.user.is_authenticated(),
-                                                    'username': username})
+        form = self.form_class()          
+        return render(request, self.template_name, {'form': form, 'results': None})
     
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
@@ -56,13 +52,17 @@ class QueueView(View):
     
     def get(self, request, *args, **kwargs):
         if not request.user.is_authenticated():
-            return HttpResponseRedirect('/login/')
+            return HttpResponseRedirect('/login/?next=/queue/')
         else:
             queue = Torrent.objects.filter(user=request.user, status=settings.WAITING)
-            username = request.user.username if request.user.is_authenticated() else None
-            return render(request, self.template_name, {'queue': queue, 
-                                                        'logged_in': request.user.is_authenticated(),
-                                                        'username': username})           
+            return render(request, self.template_name, {'queue': queue})           
+
+class SettingsView(View):
+    template_name = 'settings.html'
+    
+    def get(self, request, *args, **kwargs):
+        return render(request, 'settings.html')
+    
 
 class RegistrationView(View):
     '''    

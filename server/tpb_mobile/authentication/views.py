@@ -8,12 +8,17 @@ class LoginView(View):
     template_name = 'registration/login.html'
     
     def get(self, request, *args, **kwargs):
-        return render(request, self.template_name)
+        next_url = request.GET.get('next', default=None)
+        return render(request, self.template_name, {'next': next_url})
         
     def post(self, request, *args, **kwargs):
         result = attempt_login(request)
         if result['status'] == True:
-            return HttpResponseRedirect('/')
+            next_url = request.POST.get('next', default=None)
+            if next:
+                return HttpResponseRedirect(next_url)
+            else:
+                return HttpResponseRedirect('/')
         else:
             return render(request, self.template_name, {'message': result['message']})
       

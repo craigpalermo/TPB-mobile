@@ -1,23 +1,31 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 
+{% block nav-queue %}<li class="active"><a href="{% url queue %}">Queue</a></li>{% endblock %}
+
 {% block content %}
 
 {% if queue %}
-	{% for record in queue %}
-	<div class="search_result">
-		<p>Title: {{ record.title }}</p>
-		<p>URL:   {{ record.url }}</p>
-		<p>Size:  {{ record.size }}</p>
-		<p>Seeds: {{ record.seeders }}</p>
-		
-		<form action='{% url delete_torrent record.id %}'>
-			<input type='submit' value='Remove'>
-		</form>
-	</div>
-	{% endfor %}
+	<table class="search_results">
+		{% for record in queue %}
+		<tr>
+			<td>
+				<div class="search_result">
+					<p>Title: {{ record.title }}</p>
+					<!--<p>URL:   {{ record.url }}</p>-->
+					<p>Size:  {{ record.size }}</p>
+					<p>Seeds: {{ record.seeders }}</p>
+					
+					<form action='{% url delete_torrent record.id %}'>
+						<input type='submit' value='Remove'>
+					</form>
+				</div>
+			</td>
+		</tr>
+		{% endfor %}
+	</table>
 {% else %}	
-<p>Queue is empty!</p>
+	<p>Queue is empty!</p>
 {% endif %}
 
 {% endblock %}
