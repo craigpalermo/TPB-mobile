@@ -1,4 +1,6 @@
 from django import forms
+from django.forms import ModelForm
+from models import Torrent
 
 class SearchForm(forms.Form):
     CATEGORY_CHOICES = ( ('ALL', 'All'),
@@ -9,3 +11,8 @@ class SearchForm(forms.Form):
                          ('OTHER', 'Other') )
     search_string = forms.CharField(max_length=50)
     category = forms.ChoiceField(choices=CATEGORY_CHOICES)
+    
+class TorrentForm(ModelForm):
+    class Meta:
+            model = Torrent
+            fields = ['title', 'url', 'magnet_link', 'torrent_link', 'size']
