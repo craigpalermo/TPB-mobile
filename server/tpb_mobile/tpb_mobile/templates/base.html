@@ -1,0 +1,36 @@
+{% load staticfiles %}
+
+<html>
+<head>
+	<link rel="stylesheet" href="{% static 'css/style.css' %}"/>
+
+	<title>TPB Mobile</title>
+</head>
+
+<body {% block body_id %}{% endblock %}>
+<div id="title">
+	<h1>TPB Mobile</h1>
+</div>	
+
+<div id="navbar">
+	<ul>
+		<li><a href="{% url home %}" id="search">Search</a></li>
+		<li><a href="" id="queue">Queue</a></li>
+		<li><a href="" id="settings">Settings</a></li>
+	</ul>
+</div>
+
+<div id="content">
+{% block content %}
+{% endblock %}
+</div>
+
+<div id="footer">
+</div>
+
+</body>
+
+{% block afterbody %}
+{% endblock %}
+
+</html>

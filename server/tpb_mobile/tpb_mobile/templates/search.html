@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block content %}
+
+<form action="/" method="post">
+{% csrf_token %}
+{{ form.as_p }}
+<input type="submit" value="Search" />
+</form>
+
+{% for result in results %}
+<div class="search_result">
+	<p>Title: {{ result.title }}</p>
+	<p>URL:   {{ result.url }}</p>
+	<p>Size:  {{ result.size }}</p>
+	<p>Seeds: {{ result.seeders }}</p>
+</div>
+{% endfor %}
+
+{% endblock %}
