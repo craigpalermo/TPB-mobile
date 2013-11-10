@@ -2,7 +2,7 @@ from django.conf.urls import patterns, include, url
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
-from views import SearchView, QueueView, SettingsView, RegistrationView
+from views import SearchView, QueueView, SettingsView, RegistrationView, TorrentPageView
 from api.utils import create_torrent_record, delete_torrent_record, retrieve_queue, register_client
 from authentication.views import LoginView, logout_view
 admin.autodiscover()
@@ -13,6 +13,7 @@ urlpatterns = patterns('tpb_mobile.views',
     url(r'^queue/$', QueueView.as_view(), name='queue'),
     url(r'^settings/$', SettingsView.as_view(), name='settings'),
     url(r'^register/$', RegistrationView.as_view(), name='register'),
+    url(r'^torrent/(?P<created>(.)*)/(?P<user>(.)*)/(?P<seeders>(\d)*)/(?P<leechers>(\d)*)/(?P<url>(.)*)/$', TorrentPageView.as_view(), name='torrent'),
 
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),

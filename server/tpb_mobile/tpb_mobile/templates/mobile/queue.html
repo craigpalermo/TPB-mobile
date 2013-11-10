@@ -7,14 +7,14 @@
 
 {% if queue %}
 	<table class="search_results">
-		{% for record in queue.all %}
+		{% for result in queue.all %}
 		<tr>
 			<td>
 				<div class="search_result">
-					<p>Title: <a href="{{ record.url }}">{{ record.title }}</a></p>
+					<p>Title: <a href="/torrent/{{ result.created }}/{{ result.uploader }}/{{ result.seeders }}/{{ result.leechers }}/{{ result.url }}/">{{ result.title }}</a></p>
 					<!--<p>URL:   {{ record.url }}</p>-->
-					<p>Size:  {{ record.size }}</p>
-					<p>Seeds: {{ record.seeders }}</p>
+					<p>Size:  {{ result.size }}</p>
+					<p>Seeds: {{ result.seeders }}</p>
 					
 					<form action='{% url delete_torrent record.id %}'>
 						<input type='submit' value='Remove' class="torrent_action" />

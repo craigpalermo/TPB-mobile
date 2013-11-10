@@ -4,12 +4,13 @@ from django.template import RequestContext
 from forms import SearchForm, TorrentForm, UserForm
 from utils import match_category
 from tpb import TPB
-from tpb import CATEGORIES, ORDERS
+from tpb import ORDERS
 from django.contrib.auth.models import User
 from django.db import IntegrityError
-from models import Torrent, UserProfile
+from models import UserProfile
 import settings
 from django.http import HttpResponseRedirect
+from utils import parse_torrent_page
 
 
 class SearchView(View):
@@ -111,4 +112,19 @@ class RegistrationView(View):
             
 
         return render(request, self.template_name, {'form': form, 'message': message}, context_instance = RequestContext(request))
+    
+class TorrentPageView(View):
+    '''
+    displays the info page for a single torrent
+    '''
+    template_name ='mobile/torrent.html'
+    
+    def get(self, request, *args, **kwargs):
+        url = kwargs.get('url')
+        result = parse_torrent_page(url)
+        dict2 = {'created': kwargs.get('created'), 'user': kwargs.get('user'),
+                 'seeders': kwargs.get('seeders'), 'leechers': kwargs.get('leechers')}
+        result.update(dict2)
+        print result
+        return render(request, self.template_name, {'data': result, 'url': url}, context_instance = RequestContext(request))
     

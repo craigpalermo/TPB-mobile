@@ -1,4 +1,6 @@
 from tpb import CATEGORIES
+from bs4 import BeautifulSoup
+import urllib2
 
 def match_category(category_name):
     '''
@@ -19,3 +21,22 @@ def match_category(category_name):
     else:
         to_return = None
     return to_return
+
+def parse_torrent_page(url):
+    '''
+    parses the page for an individual torrent and returns:
+    title, type, size, description
+    '''
+    response = urllib2.urlopen(url)
+    html = response.read()
+    soup = BeautifulSoup(html)
+    
+    dd_list = soup.find_all('dd')
+    
+    result = {}
+    result['title'] = soup.find(id="title").string
+    result['description'] = soup.find('pre').getText()
+    result['type'] = dd_list[0].string
+    result['size'] = dd_list[2].string
+    
+    return result

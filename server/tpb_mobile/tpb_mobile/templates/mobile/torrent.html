@@ -1,0 +1,74 @@
+{% extends 'mobile/base.html' %}
+{% load staticfiles %}
+
+{% block nav-search %}<li class="active"><a href="{% url home %}">Search</a></li>{% endblock %}
+
+{% block content %}
+
+<span class="data-header">Title:</span>
+{{ data.title }}
+<br />
+
+<span class="data-header">Type:</span>
+{{ data.type }}
+<br />
+
+<span class="data-header">Size:</span>
+{{ data.size }}
+<br />
+
+<span class="data-header">Uploaded:</span>
+{{ data.created }}
+<br />
+
+<span class="data-header">By:</span>
+{{ data.user }}
+<br />
+
+<span class="data-header">Seeders:</span>
+{{ data.seeders }}
+<br />
+
+<span class="data-header">Leechers:</span>
+{{ data.leechers }}
+<br />
+
+<span class="data-header">Description:</span>
+{{ data.description }}
+<br />
+
+<br />
+<a href="{{ url }}">View torrent on The Pirate Bay</a>
+<br />
+<br />
+
+<form action="{% url create_torrent %}" method="post">
+	{% csrf_token %}
+	<input type="hidden" name="title" id="id_title" value=""/>
+	<input id="id_url" type="hidden" name="url" maxlength="200" value=""/>
+	<input id="id_magnet_link" type="hidden" name="magnet_link" maxlength="200" value=""/>
+	<input id="id_torrent_link" type="hidden" name="torrent_link" maxlength="200" value=""/>
+	<input type="hidden" name="size" id="id_size" value=""/>
+	<input type="hidden" name="seeders" id="id_seeders" value=""/>
+	
+	{% if user.is_authenticated %}
+	<input type="submit" value="Add to Queue" class="torrent_action"/>
+	{% else %}
+	<input type="button" value="Add to Queue" class="torrent_action" onclick="myFunction()"/>
+	{% endif %}
+</form>
+
+{% if not user.is_authenticated %}
+	<script>
+		function myFunction()
+		{
+		alert("You must be signed in to add torrents to your queue!");
+		}
+	</script>
+{% endif %}
+
+<div id="dialog" title="Basic dialog" style="display:none">
+  <p>This is the default dialog which is useful for displaying information. The dialog window can be moved, resized and closed with the 'x' icon.</p>
+</div>
+
+{% endblock %}
