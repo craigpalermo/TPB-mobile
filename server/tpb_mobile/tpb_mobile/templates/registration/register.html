@@ -12,6 +12,8 @@
 	<form action="{% url register %}" method="post">
 		{% csrf_token %}
 		
+		<div class='form_error'>{{ message }}</div><br />
+		
 		{% for field in form %}
 	        <div class="fieldWrapper">
 	            {{ field.errors }}

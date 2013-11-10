@@ -6,6 +6,7 @@ from utils import match_category
 from tpb import TPB
 from tpb import CATEGORIES, ORDERS
 from django.contrib.auth.models import User
+from django.db import IntegrityError
 from models import Torrent, UserProfile
 import settings
 from django.http import HttpResponseRedirect
@@ -32,7 +33,7 @@ class SearchView(View):
             category_string = form.cleaned_data['category']
             
             # construct search arguments
-            # hardcoded to get first page, sort by num. of seeders in descending order
+            # hardcoded to get first page, sort by number of seeders in descending order
             t = TPB(settings.TPB_URL)
             category = match_category(category_string)
             search = t.search(search_string, category=category).order(ORDERS.SEEDERS.ASC)
@@ -63,7 +64,7 @@ class SettingsView(View):
     def get(self, request, *args, **kwargs):
         try:
             profile = UserProfile.objects.get(user=request.user)
-            client_id = profile.client_id
+            client_id = profile.client_id if profile.client_id != None else "No client registered"
         except:    
             client_id = "Not logged in"
         return render(request, 'settings.html', {'client_id': client_id})
@@ -91,21 +92,27 @@ class RegistrationView(View):
     
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
+        message = None
+        
         if form.is_valid():
             cd = form.cleaned_data
             user = User()
             
             user.username = cd['username']    
             user.email = cd['email']
-            user.password = cd['password']
-            user.save()
+            user.set_password(cd['password'])
             
-            # create UserProfile
-            profile = UserProfile()
-            profile.user = user
-            profile.save()
+            try:
+                user.save()
                 
-            return HttpResponseRedirect('/')
+                # create UserProfile
+                profile = UserProfile()
+                profile.user = user
+                profile.save()
+                return HttpResponseRedirect('/')
+            except IntegrityError:
+                message = "The username you entered is taken"
+            
 
-        return render(request, self.template_name, {'form': form}, context_instance = RequestContext(request))
+        return render(request, self.template_name, {'form': form, 'message': message}, context_instance = RequestContext(request))
     
