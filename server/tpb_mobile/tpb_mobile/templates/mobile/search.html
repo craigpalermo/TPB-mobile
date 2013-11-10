@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'mobile/base.html' %}
 {% load staticfiles %}
 
 {% block nav-search %}<li class="active"><a href="{% url home %}">Search</a></li>{% endblock %}
@@ -14,7 +14,7 @@
 	<tr>
 		<td>
 			<div class="search_result">
-				<p><strong>Title:</strong> {{ result.title }}</p>
+				<p><strong>Title:</strong> <a href="{{ result.url }}">{{ result.title }}</a></p>
 				<!-- <p>URL:   {{ result.url }}</p> -->
 				<p><strong>Size:</strong>  {{ result.size }}</p>
 				<p><strong>Seeds:</strong> {{ result.seeders }}</p>
@@ -29,9 +29,9 @@
 					<input type="hidden" name="seeders" id="id_seeders" value="{{ result.seeders }}"/>
 					
 					{% if user.is_authenticated %}
-					<input type="submit" value="Add to Queue" class="submit_button"/>
+					<input type="submit" value="Add to Queue" class="torrent_action"/>
 					{% else %}
-					<input type="button" value="Add to Queue" class="submit_button" onclick="myFunction()"/>
+					<input type="button" value="Add to Queue" class="torrent_action" onclick="myFunction()"/>
 					{% endif %}
 				</form>
 			</div>

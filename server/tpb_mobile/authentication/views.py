@@ -5,7 +5,7 @@ from django.views.generic.base import View
 
 
 class LoginView(View):
-    template_name = 'registration/login.html'
+    template_name = 'mobile/registration/login.html'
     
     def get(self, request, *args, **kwargs):
         next_url = request.GET.get('next', default=None)

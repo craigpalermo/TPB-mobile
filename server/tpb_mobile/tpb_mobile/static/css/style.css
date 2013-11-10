@@ -10,9 +10,15 @@
 	width: 550px;
 	border-collapse: collapse;
 	table-layout: fixed;
+	margin-bottom: 10px;
 }
 
 .search_results td {
 	word-wrap:break-word;
-	border: 1px solid black;
+	border: 1px solid white;
+	background: #efeded;
+}
+
+.torrent_action {
+	margin: 0px;
 }

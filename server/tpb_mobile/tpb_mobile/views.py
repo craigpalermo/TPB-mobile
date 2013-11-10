@@ -16,7 +16,7 @@ class SearchView(View):
     '''
     view for search page
     '''
-    template_name = 'search.html'
+    template_name = 'mobile/search.html'
     form_class = SearchForm
     
     def get(self, request, *args, **kwargs):
@@ -45,7 +45,7 @@ class QueueView(View):
     '''
     displays the list of torrents currently in the user's queue
     '''
-    template_name = 'queue.html'
+    template_name = 'mobile/queue.html'
     
     def get(self, request, *args, **kwargs):
         if not request.user.is_authenticated():
@@ -55,7 +55,7 @@ class QueueView(View):
             return render(request, self.template_name, {'queue': queue})           
 
 class SettingsView(View):
-    template_name = 'settings.html'
+    template_name = 'mobile/settings.html'
     
     def get(self, request, *args, **kwargs):
         try:
@@ -63,7 +63,7 @@ class SettingsView(View):
             client_id = profile.client_id if profile.client_id != None else "No client registered"
         except:    
             client_id = "Not logged in"
-        return render(request, 'settings.html', {'client_id': client_id})
+        return render(request, 'mobile/settings.html', {'client_id': client_id})
     
     def post(self, request, *args, **kwargs):
         try:
@@ -73,14 +73,14 @@ class SettingsView(View):
             profile.save()
         except:
             client_id = "Error retrieving client ID"
-        return render(request, 'settings.html', {'client_id': client_id})
+        return render(request, 'mobile/settings.html', {'client_id': client_id})
 
 class RegistrationView(View):
     '''    
     form for new users to register
     '''
     form_class = UserForm
-    template_name = 'registration/register.html'
+    template_name = 'mobile/registration/register.html'
     
     def get(self, request, *args, **kwargs):
         form = self.form_class()
