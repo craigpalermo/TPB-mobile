@@ -7,7 +7,7 @@
 
 {% if queue %}
 	<table class="search_results">
-		{% for record in queue %}
+		{% for record in queue.all %}
 		<tr>
 			<td>
 				<div class="search_result">

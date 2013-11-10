@@ -21,7 +21,7 @@ urlpatterns = patterns('tpb_mobile.views',
 urlpatterns += patterns('api.utils',
     url(r'^api/create_torrent/$', create_torrent_record, name='create_torrent'),
     url(r'^api/delete_torrent/(?P<torrent_id>\d*)/$', delete_torrent_record, name='delete_torrent'),
-    url(r'^api/retrieve_queue/(?P<uuid>(\w|[-])*)/(?P<client_id>\w*)/$', retrieve_queue, name='retrieve_queue'),
+    url(r'^api/retrieve_queue/(?P<uuid>(\w|[-])*)/(?P<client_id>(\w|[-])*)/$', retrieve_queue, name='retrieve_queue'),
     url(r'^api/register_client/$', register_client, name='register_client')
 )
 

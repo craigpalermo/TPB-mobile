@@ -9,21 +9,30 @@ def create_torrent_record(request):
     '''
     adds a new torrent record to the database using form data from request
     '''
-    if request.user.is_authenticated():
-        form = TorrentForm(request.POST)
-        new_torrent = form.save(commit=False)
-        new_torrent.status = s.WAITING
-        new_torrent.user = request.user
-        new_torrent.save()
-        return HttpResponseRedirect('/')
+    form = TorrentForm(request.POST)
+    if request.user.is_authenticated() and form.is_valid():
+        try:
+            new_torrent = Torrent.objects.get(magnet_link=form.cleaned_data['magnet_link'])   
+        except:
+            new_torrent = form.save(commit=False)
+            new_torrent.save()
+            
+        # add torrent to user's queue
+        try:
+            profile = UserProfile.objects.get(user=request.user)
+            profile.queue.add(new_torrent)
+            profile.save()
+        except:
+            pass
+    return HttpResponseRedirect('/')
         
 
 def delete_torrent_record(request, torrent_id):
     try:
         Torrent.objects.get(id=torrent_id).delete()
-        return HttpResponseRedirect('/queue/')
     except:
         pass
+    return HttpResponseRedirect('/queue/')
 
 def register_client(request):
     '''
@@ -54,7 +63,7 @@ def retrieve_queue(request, uuid, client_id):
         profile = UserProfile.objects.get(uuid=uuid)
         
         if profile.client_id == client_id:
-            records = Torrent.objects.filter(user=profile.user)
+            records = profile.queue.all()
             
             for i in records:
                 i.status = s.DOWNLOADED

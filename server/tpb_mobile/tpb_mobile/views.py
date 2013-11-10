@@ -51,7 +51,7 @@ class QueueView(View):
         if not request.user.is_authenticated():
             return HttpResponseRedirect('/login/?next=/queue/')
         else:
-            queue = Torrent.objects.filter(user=request.user, status=settings.WAITING)
+            queue = UserProfile.objects.get(user=request.user).queue
             return render(request, self.template_name, {'queue': queue})           
 
 class SettingsView(View):
