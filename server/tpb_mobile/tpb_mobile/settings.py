@@ -110,6 +110,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'tpb_mobile.2001.MobileDetectionMiddleware'
 )
 
 ROOT_URLCONF = 'tpb_mobile.urls'
@@ -136,6 +137,19 @@ INSTALLED_APPS = (
     'south',
     'django_extensions'
 )
+
+MOBILE_UTILS_SETTINGS = {
+    'MOBILE_TEMPLATES_DIR': (              # tuple of mobile template dirs (absolute paths
+        PROJECT_PATH + "/templates/mobile/",
+    ),
+    'IGNORE_LIST':(                        #tuple of browsers to ignore
+        'ipad',
+        'palm',
+        'wap',
+    ),
+    'USER_AGENTS_FILE' : '/path/to/file',  # line-broken strings to match
+    'USE_REGEX':False                      # use RegEx to do the string search
+}
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
