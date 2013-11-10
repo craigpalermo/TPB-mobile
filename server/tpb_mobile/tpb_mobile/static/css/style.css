@@ -1,3 +1,18 @@
 .form_error {
 	color: red;
 }
+
+#logo {
+	width: 200;
+}
+
+.search_results {
+	width: 550px;
+	border-collapse: collapse;
+	table-layout: fixed;
+}
+
+.search_results td {
+	word-wrap:break-word;
+	border: 1px solid black;
+}

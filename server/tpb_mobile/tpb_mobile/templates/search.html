@@ -15,10 +15,10 @@
 	<tr>
 		<td>
 			<div class="search_result">
-				<p>Title: {{ result.title }}</p>
+				<p><strong>Title:</strong> {{ result.title }}</p>
 				<!-- <p>URL:   {{ result.url }}</p> -->
-				<p>Size:  {{ result.size }}</p>
-				<p>Seeds: {{ result.seeders }}</p>
+				<p><strong>Size:</strong>  {{ result.size }}</p>
+				<p><strong>Seeds:</strong> {{ result.seeders }}</p>
 				
 				<form action="{% url create_torrent %}" method="post">
 					{% csrf_token %}
@@ -29,7 +29,11 @@
 					<input type="hidden" name="size" id="id_size" value="{{ result.size }}"/>
 					<input type="hidden" name="seeders" id="id_seeders" value="{{ result.seeders }}"/>
 					
-					<input type="submit" value="Add to Queue" />
+					{% if request.user.is_authenticated %}
+					<input type="submit" value="Add to Queue" class="submit_button"/>
+					{% else %}
+					<input type="button" value="Add to Queue" class="submit_button" onclick="myFunction()"/>
+					{% endif %}
 				</form>
 			</div>
 		</td>
@@ -37,6 +41,17 @@
 	{% endfor %}
 </table>
 
+{% if not request.user.is_authenticated %}
+	<script>
+		function myFunction()
+		{
+		alert("You must be signed in to add torrents to your queue!");
+		}
+	</script>
+{% endif %}
 
+<div id="dialog" title="Basic dialog" style="display:none">
+  <p>This is the default dialog which is useful for displaying information. The dialog window can be moved, resized and closed with the 'x' icon.</p>
+</div>
 
 {% endblock %}

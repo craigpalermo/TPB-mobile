@@ -4,6 +4,8 @@
 <head>
 	<title>TPB Mobile</title>
 	<link rel="stylesheet" href="{% static 'css/style.css' %}"/>
+	<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+	<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 	
 	<!-- Bootstrap -->
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,12 +17,14 @@
 
 <body {% block body_id %}{% endblock %}>
 	<div class="container-fluid">
-		<h1><a href=""#"">TPB Mobile</a></h1>
+		<!-- <h1><a href="{% url home %}">TPB Mobile</a></h1> -->
+		<img src="{% static 'img/tpb-mobile.png' %}" id="logo" />
 		
 		<!-- Login button / greeting -->
 		{% if user.is_authenticated %}
 			<p>Welcome, {{ user.username }}!</p>
 		{% endif %}
+		
 		
 		<!-- Navigation Bar -->
 		<div class="navbar">

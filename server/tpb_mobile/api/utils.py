@@ -9,12 +9,16 @@ def create_torrent_record(request):
     '''
     adds a new torrent record to the database using form data from request
     '''
-    form = TorrentForm(request.POST)
-    new_torrent = form.save(commit=False)
-    new_torrent.status = s.WAITING
-    new_torrent.user = request.user
-    new_torrent.save()
-    return HttpResponseRedirect('/')
+    if request.user.is_authenticated():
+        form = TorrentForm(request.POST)
+        new_torrent = form.save(commit=False)
+        new_torrent.status = s.WAITING
+        new_torrent.user = request.user
+        new_torrent.save()
+        return HttpResponseRedirect('/')
+    else:
+        message = "You must be logged in to add torrents to your queue"
+        
 
 def delete_torrent_record(request, torrent_id):
     try:
