@@ -29,7 +29,7 @@
 					<input type="hidden" name="size" id="id_size" value="{{ result.size }}"/>
 					<input type="hidden" name="seeders" id="id_seeders" value="{{ result.seeders }}"/>
 					
-					{% if request.user.is_authenticated %}
+					{% if user.is_authenticated %}
 					<input type="submit" value="Add to Queue" class="submit_button"/>
 					{% else %}
 					<input type="button" value="Add to Queue" class="submit_button" onclick="myFunction()"/>
@@ -41,7 +41,7 @@
 	{% endfor %}
 </table>
 
-{% if not request.user.is_authenticated %}
+{% if not user.is_authenticated %}
 	<script>
 		function myFunction()
 		{
