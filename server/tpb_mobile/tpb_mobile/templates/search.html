@@ -4,8 +4,7 @@
 {% block nav-search %}<li class="active"><a href="{% url home %}">Search</a></li>{% endblock %}
 
 {% block content %}
-<form action="/" method="post">
-	{% csrf_token %}
+<form action="/" method="get">
 	{{ form.as_p }}
 	<input type="submit" value="Search" />
 </form>

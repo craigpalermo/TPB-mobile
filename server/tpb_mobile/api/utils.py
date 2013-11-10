@@ -16,8 +16,6 @@ def create_torrent_record(request):
         new_torrent.user = request.user
         new_torrent.save()
         return HttpResponseRedirect('/')
-    else:
-        message = "You must be logged in to add torrents to your queue"
         
 
 def delete_torrent_record(request, torrent_id):
