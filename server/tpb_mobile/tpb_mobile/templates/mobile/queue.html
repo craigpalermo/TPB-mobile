@@ -3,6 +3,20 @@
 
 {% block nav-queue %}<li class="active"><a href="{% url queue %}">Queue</a></li>{% endblock %}
 
+{% block extrahead %}
+<script language="JavaScript" type="text/javascript">
+ 
+/* either create a new torrent record or redirect to the torrents info page
+ * depending on which link the user clicked */
+function submit_form (action, form_name) {
+	var form = document.getElementsByName(form_name)[0]
+	form.link_action.value = action ;
+	form.submit() ;
+}
+
+</script>
+{% endblock %}
+
 {% block content %}
 
 {% if queue %}
@@ -11,13 +25,26 @@
 		<tr>
 			<td>
 				<div class="search_result">
-					<p>Title: <a href="/torrent/{{ result.created }}/{{ result.uploader }}/{{ result.seeders }}/{{ result.leechers }}/{{ result.url }}/">{{ result.title }}</a></p>
-					<!--<p>URL:   {{ record.url }}</p>-->
-					<p>Size:  {{ result.size }}</p>
-					<p>Seeds: {{ result.seeders }}</p>
-					
-					<form action='{% url delete_torrent record.id %}'>
-						<input type='submit' value='Remove' class="torrent_action" />
+					<form name="torrent_form_{{ forloop.counter0 }}" action="{% url middleman %}" method="post">
+						{% csrf_token %}
+						<p><strong>Title:</strong> <a href="javascript:submit_form('go_to_page', 'torrent_form_{{ forloop.counter0 }}')">{{ result.title }}</a></p>
+						<p><strong>Size:</strong>  {{ result.size }}</p>
+						<p><strong>Seeds:</strong> {{ result.seeders }}</p>
+						<p><strong>Leechers:</strong> {{ result.leechers }}</p>
+						
+						<input type="hidden" name="title" id="id_title" value="{{ result.title }}"/>
+						<input id="id_url" type="hidden" name="url" maxlength="200" value="{{ result.url }}"/>
+						<input id="id_magnet_link" type="hidden" name="magnet_link" maxlength="200" value="{{ result.magnet_link }}"/>
+						<input id="id_torrent_link" type="hidden" name="torrent_link" maxlength="200" value="{{ result.torrent_link }}"/>
+						<input type="hidden" name="size" id="id_size" value="{{ result.size }}"/>
+						<input type="hidden" name="seeders" id="id_seeders" value="{{ result.seeders }}"/>
+						<input type="hidden" name="leechers" id="id_leechers" value="{{ result.leechers }}"/>
+						<input type="hidden" name="created" id="id_created" value="{{ result.created }}"/>
+						<input type="hidden" name="user" id="id_user" value="{{ result.user }}"/>
+						
+						<input type="hidden" name="link_action" id="link_action"/>
+						
+						<input type='button' value='Remove' class="torrent_action" onclick="submit_form('delete_torrent', 'torrent_form_{{ forloop.counter0 }}')"/>
 					</form>
 				</div>
 			</td>

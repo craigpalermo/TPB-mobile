@@ -33,23 +33,23 @@
 {{ data.leechers }}
 <br />
 
-<span class="data-header">Description:</span>
+<span class="data-header">Description:</span><br />
 {{ data.description }}
 <br />
 
 <br />
-<a href="{{ url }}">View torrent on The Pirate Bay</a>
+<a href="{{ data.url }}">View torrent on The Pirate Bay</a>
 <br />
 <br />
 
 <form action="{% url create_torrent %}" method="post">
 	{% csrf_token %}
-	<input type="hidden" name="title" id="id_title" value=""/>
-	<input id="id_url" type="hidden" name="url" maxlength="200" value=""/>
+	<input type="hidden" name="title" id="id_title" value="{{ data.title }}"/>
+	<input id="id_url" type="hidden" name="url" maxlength="200" value="{{ url }}"/>
 	<input id="id_magnet_link" type="hidden" name="magnet_link" maxlength="200" value=""/>
 	<input id="id_torrent_link" type="hidden" name="torrent_link" maxlength="200" value=""/>
-	<input type="hidden" name="size" id="id_size" value=""/>
-	<input type="hidden" name="seeders" id="id_seeders" value=""/>
+	<input type="hidden" name="size" id="id_size" value="{{ data.size }}"/>
+	<input type="hidden" name="seeders" id="id_seeders" value="{{ data.seeders }}"/>
 	
 	{% if user.is_authenticated %}
 	<input type="submit" value="Add to Queue" class="torrent_action"/>

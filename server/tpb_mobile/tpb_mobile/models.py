@@ -12,6 +12,9 @@ class Torrent(models.Model):
     torrent_link = models.CharField(max_length=1000)
     size = models.CharField(max_length=20)
     seeders = models.PositiveIntegerField(null=True)
+    leechers = models.PositiveIntegerField(null=True)
+    user = models.CharField(max_length=60)
+    created = models.CharField(max_length=60)
 
 class UserProfile(models.Model):
     user = models.ForeignKey(User, unique=True)

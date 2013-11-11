@@ -13,9 +13,10 @@ class SearchForm(forms.Form):
     category = forms.ChoiceField(choices=CATEGORY_CHOICES)
     
 class TorrentForm(ModelForm):
+    link_action = forms.CharField()
     class Meta:
         model = Torrent
-        fields = ['title', 'url', 'magnet_link', 'torrent_link', 'size', 'seeders']
+        fields = ['title', 'url', 'magnet_link', 'torrent_link', 'size', 'seeders', 'leechers', 'created', 'user']
             
 class UserForm(forms.Form):
     username = forms.CharField()

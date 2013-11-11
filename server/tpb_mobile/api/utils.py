@@ -27,9 +27,16 @@ def create_torrent_record(request):
     return HttpResponseRedirect('/')
         
 
-def delete_torrent_record(request, torrent_id):
+def delete_torrent_record(request):
+    '''
+    removes the torrent with the magnet link matching the one in the POST dictionary from
+    request.user's queue; DOES NOT actually delete the DB record for that torrent
+    '''
     try:
-        Torrent.objects.get(id=torrent_id).delete()
+        profile = UserProfile.objects.get(user=request.user)
+        to_remove = Torrent.objects.get(magnet_link=request.POST.get('magnet_link'))
+        profile.queue.remove(to_remove)
+        profile.save()
     except:
         pass
     return HttpResponseRedirect('/queue/')

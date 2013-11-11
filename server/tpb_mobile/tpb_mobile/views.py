@@ -11,7 +11,7 @@ from models import UserProfile
 import settings
 from django.http import HttpResponseRedirect
 from utils import parse_torrent_page
-
+from api.utils import create_torrent_record, delete_torrent_record
 
 class SearchView(View):
     '''
@@ -127,4 +127,31 @@ class TorrentPageView(View):
         result.update(dict2)
         print result
         return render(request, self.template_name, {'data': result, 'url': url}, context_instance = RequestContext(request))
+    
+    def post(self, request, *args, **kwargs):
+        form = TorrentForm(request.POST)
+        
+        if form.is_valid():
+            cd = form.cleaned_data
+            print cd
+            data = {'seeders': cd.get('seeders'), 'title': cd.get('title'), 'url': cd.get('url'),
+                    'torrent_link': cd.get('torrent_link'), 'magnet_link': cd.get('magnet_link'),
+                    'size': cd.get('size'), 'leechers': cd.get('leechers'), 'created': cd.get('created'),
+                    'user': cd.get('user')}
+            result = parse_torrent_page(cd.get('url'))
+            data.update(result)
+            
+        return render(request, self.template_name, {'data': data}, context_instance = RequestContext(request))
+        
+def torrent_form_middleman(request):
+    '''
+    directs the user to the correct view based on which link/button they clicked on the search or queue page
+    '''
+    if request.POST.get('link_action') == 'create_torrent':
+        return create_torrent_record(request)
+    elif request.POST.get('link_action') == 'delete_torrent':
+        return delete_torrent_record(request)
+    else:
+        tpv = TorrentPageView()
+        return tpv.post(request)
     
