@@ -24,7 +24,7 @@ def create_torrent_record(request):
             profile.save()
         except:
             pass
-    return HttpResponseRedirect('/')
+    return HttpResponse("Torrent created successfully.")
         
 
 def delete_torrent_record(request):

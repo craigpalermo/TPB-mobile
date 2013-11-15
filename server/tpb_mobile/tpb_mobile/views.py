@@ -22,25 +22,31 @@ class SearchView(View):
     
     def get(self, request, *args, **kwargs):
         form = self.form_class()
+        torrent_form = TorrentForm()
         if 'search_string' in request.GET:
             form = self.form_class(request.GET)
             torrent_form = TorrentForm()
+            results = None
         
-            if form.is_valid():
-                # get cleaned form data
-                search_string = form.cleaned_data['search_string']
-                category_string = form.cleaned_data['category']
-                
-                # construct search arguments
-                # hardcoded to get first page, sort by number of seeders in descending order
-                t = TPB(settings.TPB_URL)
-                category = match_category(category_string)
-                search = t.search(search_string, category=category).order(ORDERS.SEEDERS.ASC)
-                results = search.page(1)
+            # get cleaned form data
+            search_string = request.GET.get('search_string', "")
+            category_string = request.GET.get('category', "")
+            
+            # construct search arguments
+            # hardcoded to get first page, sort by number of seeders in descending order
+            t = TPB(settings.TPB_URL)
+            category = match_category(category_string)
+            search = t.search(search_string, category=category).order(ORDERS.SEEDERS.ASC)
+            results = search.page(1)
+            
+            print search_string
+            print category_string
+            for i in results:
+                print i
                         
             return render(request, self.template_name, {'form': form, 'results': results, 'torrent_form': torrent_form})
         else:          
-            return render(request, self.template_name, {'form': form, 'results': None})
+            return render(request, self.template_name, {'form': form, 'results': None, 'torrent_form': torrent_form})
 
 class QueueView(View):
     '''
@@ -130,6 +136,7 @@ class TorrentPageView(View):
     
     def post(self, request, *args, **kwargs):
         form = TorrentForm(request.POST)
+        data = {}
         
         if form.is_valid():
             cd = form.cleaned_data

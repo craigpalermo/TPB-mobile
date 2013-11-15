@@ -2,18 +2,30 @@
 	color: red;
 }
 
+#greeting {
+	font-weight: bold;
+}
+
 #logo {
 	width: 200;
+	margin-left: auto;
+	margin-right: auto;
+	display: block;
+	margin-bottom: 10px;
 }
 
 .search_results {
-	width: 550px;
+	width: 100%;
 	border-collapse: collapse;
 	table-layout: fixed;
 	margin-bottom: 10px;
 }
 
-.search_results td {
+.search_results input {
+	margin-bottom: -10px;
+}
+
+.search_result_cell {
 	word-wrap:break-word;
 	border: 1px solid white;
 	background: #efeded;
@@ -25,4 +37,21 @@
 
 .data-header {
 	font-weight: bold;
+}
+
+#id_search_string {
+	padding-top: 15px;
+	padding-bottom: 15px;
+	font-size: 18;
+	width: 100%;
+}
+
+#id_category {
+	width: 100%;
+}
+
+#search_button {
+	width: 100%;
+	padding: 5px;
+	font-size: 18;	
 }

@@ -17,14 +17,7 @@
 
 <body {% block body_id %}{% endblock %}>
 	<div class="container-fluid">
-		<!-- <h1><a href="{% url home %}">TPB Mobile</a></h1> -->
 		<a href="{% url home %}"><img src="{% static 'img/tpb-mobile.png' %}" id="logo" /></a>
-		
-		<!-- Login button / greeting -->
-		{% if user.is_authenticated %}
-			<p>Welcome, {{ user.username }}!</p>
-		{% endif %}
-		
 		
 		<!-- Navigation Bar -->
 		<div class="navbar">
@@ -40,6 +33,9 @@
 							{% block nav-login %}<li><a href='{% url login %}'>Sign In</a></li>{% endblock %}
 						{% else %}
 							<li><a href='{% url logout %}'>Logout</a></li>
+							
+							<!-- Login button / greeting -->
+							<li id="greeting"><a>Welcome, {{ user.username }}!</a></li>
 						{% endif %}
 					</ul>
 					{% endblock %}

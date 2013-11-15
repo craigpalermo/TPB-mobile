@@ -19,31 +19,31 @@ function submit_form (action, form_name) {
 
 {% block content %}
 <form action="/" method="get">
-	{{ form.as_p }}
-	<input type="submit" value="Search" />
+	<input id="id_search_string" type="text" name="search_string" value="breaking bad" maxlength="50" />
+	<p>
+		<label for="id_category">Category:</label> <select name="category" id="id_category">
+		<option value="ALL">All</option>
+		<option value="APPLICATIONS">Applications</option>
+		<option value="AUDIO">Audio</option>
+		<option value="GAMES">Games</option>
+		<option value="VIDEO">Video</option>
+		<option value="OTHER">Other</option>
+		</select>
+	</p>
+	<input id="search_button" type="submit" value="Search" />
 </form>
 
+{% if not results %}
+<p>Your search returned no results.</p>
+{% else %}
 <table class="search_results">
 	{% for result in results %}
 	<tr>
-		<td>
+		<td class="search_result_cell">
 			<div class="search_result">
-				<form name="torrent_form_{{ forloop.counter0 }}" action="{% url middleman %}" method="post">
+				<form name="torrent_form_{{ forloop.counter0 }}" id="torrent_form_{{ forloop.counter0 }}" action="{% url middleman %}" method="post">
 					{% csrf_token %}
-					<p><strong>Title:</strong> <a href="javascript:submit_form('go_to_page', 'torrent_form_{{ forloop.counter0 }}')">{{ result.title }}</a></p>
-					<p><strong>Size:</strong>  {{ result.size }}</p>
-					<p><strong>Seeds:</strong> {{ result.seeders }}</p>
-					<p><strong>Leechers:</strong> {{ result.leechers }}</p>
-					
-					<input type="hidden" name="title" id="id_title" value="{{ result.title }}"/>
-					<input id="id_url" type="hidden" name="url" maxlength="200" value="{{ result.url }}"/>
-					<input id="id_magnet_link" type="hidden" name="magnet_link" maxlength="200" value="{{ result.magnet_link }}"/>
-					<input id="id_torrent_link" type="hidden" name="torrent_link" maxlength="200" value="{{ result.torrent_link }}"/>
-					<input type="hidden" name="size" id="id_size" value="{{ result.size }}"/>
-					<input type="hidden" name="seeders" id="id_seeders" value="{{ result.seeders }}"/>
-					<input type="hidden" name="leechers" id="id_leechers" value="{{ result.leechers }}"/>
-					<input type="hidden" name="created" id="id_created" value="{{ result.created }}"/>
-					<input type="hidden" name="user" id="id_user" value="{{ result.user }}"/>
+					{% include 'mobile/search_result.html' %}
 					
 					<input type="hidden" name="link_action" id="link_action"/>
 					
@@ -51,13 +51,14 @@ function submit_form (action, form_name) {
 					<input type="button" value="Add to Queue" class="torrent_action" onclick="submit_form('create_torrent', 'torrent_form_{{ forloop.counter0 }}')"/>
 					{% else %}
 					<input type="button" value="Add to Queue" class="torrent_action" onclick="myFunction()"/>
-					{% endif %}
+					{% endif %}	
 				</form>
 			</div>
 		</td>
 	</tr>
 	{% endfor %}
 </table>
+{% endif %}
 
 {% if not user.is_authenticated %}
 	<script>
