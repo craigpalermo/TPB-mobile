@@ -33,9 +33,8 @@ function submit_form (action, form_name) {
 	<input id="search_button" type="submit" value="Search" />
 </form>
 
-{% if not results %}
-<p>Your search returned no results.</p>
-{% else %}
+
+{% if results %}
 <table class="search_results">
 	{% for result in results %}
 	<tr>
@@ -58,6 +57,8 @@ function submit_form (action, form_name) {
 	</tr>
 	{% endfor %}
 </table>
+{% else %}
+<p>Your search returned no results.</p>
 {% endif %}
 
 {% if not user.is_authenticated %}

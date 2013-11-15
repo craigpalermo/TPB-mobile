@@ -39,11 +39,13 @@ class SearchView(View):
             search = t.search(search_string, category=category).order(ORDERS.SEEDERS.ASC)
             results = search.page(1)
             
-            print search_string
-            print category_string
-            for i in results:
-                print i
-                        
+            # a hacky way of telling if the search returned any results or not
+            try:
+                for i in results:
+                    print i
+            except:
+                results = None
+            
             return render(request, self.template_name, {'form': form, 'results': results, 'torrent_form': torrent_form})
         else:          
             return render(request, self.template_name, {'form': form, 'results': None, 'torrent_form': torrent_form})
