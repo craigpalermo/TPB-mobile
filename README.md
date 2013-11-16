@@ -12,9 +12,11 @@ Setup (Windows)
 5. cd tpb-mobile
 6. Run: 
 
-    python setup.py install
-    easy_install pip
-    pip install -r miscellaneous/deps
+<pre>
+python setup.py install
+easy_install pip
+pip install -r miscellaneous/deps
+</pre>
 
 7. Install [lxml](http://www.lfd.uci.edu/~gohlke/pythonlibs/#lxml)
     * Install either lxml-3.2.4.win-amd64-py2.7.exe or lxml-3.2.4.win32-py2.7.exe for 64/32-bit.
