@@ -40,3 +40,12 @@ def parse_torrent_page(url):
     result['size'] = dd_list[2].string
     
     return result
+
+def get_results_length(results):
+    '''
+    returns the number of results returned by a search
+    '''
+    count = 0
+    for i in results:
+        count += 1
+    return count
