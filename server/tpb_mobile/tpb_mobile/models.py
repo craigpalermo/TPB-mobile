@@ -19,7 +19,7 @@ class Torrent(models.Model):
 class UserProfile(models.Model):
     user = models.ForeignKey(User, unique=True)
     uuid = UUIDField(primary_key=True)
-    client_id = models.CharField(max_length=50, null=True)
+    client_id = models.CharField(max_length=50, null=True, default=None)
     queue = models.ManyToManyField(Torrent)
     
 User.profile = property(lambda u: UserProfile.objects.get_or_create(user=u)[0])

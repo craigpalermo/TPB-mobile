@@ -6,12 +6,18 @@
 {% block content %}
 
 <p><strong>Your Client Id:</strong></p>
+{% if client_id %}
 <p>{{ client_id }}</p>
+{% else %}
+<p>No client registered.</p>
+{% endif %}
 
 <form action="{% url settings %}" method="post">
 	{% csrf_token %}
 	<input type='text' placeholder='New Client ID' name='client_id' /><br />
 	<input type="submit" value="Update" />
 </form>
+
+<a href="{% url reset_client_id %}"><input type="button" value="Reset Client ID" /></a>
 
 {% endblock %}

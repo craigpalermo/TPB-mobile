@@ -1,5 +1,6 @@
 from tpb_mobile.forms import TorrentForm
 from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render
 from tpb_mobile.models import Torrent, UserProfile
 from django.contrib.auth import authenticate
 import json
@@ -41,25 +42,44 @@ def delete_torrent_record(request):
         pass
     return HttpResponseRedirect('/queue/')
 
-def register_client(request):
+def register_client(request, *args, **kwargs):
     '''
     attempts to authenticate using username and password. if successful, returns the user's uuid.
     if not, returns -1 to indicate error.
     '''
-    username = request.POST('username', '')
-    password = request.POST('password', '')
+    username = request.GET.get('username', '')
+    password = request.GET.get('password', '')
+    client_id = request.GET.get('client_id', '')
+    
+    result = {}
     
     user = authenticate(username=username, password=password)
     if user is not None:
         try:
             profile = UserProfile.objects.get(user=user)
-            to_return = profile.uuid
+            result['uuid'] = profile.uuid
+            
+            if profile.client_id == "":
+                profile.client_id = client_id
+                profile.save()
+                result['client_id'] = "Success"
+            else:
+                result['client_id'] = "Failure"
+                
+            result['status'] = "Success"
         except:
             pass
     else:
-        to_return = "-1"
-    return HttpResponse(to_return, content_type="application/json")
+        result = {'uuid': -1, 'status': "Failure", 'client_id': "Failure"}
         
+    result = json.dumps(result)
+    return HttpResponse(result, content_type="application/json")
+
+def reset_client_id(request):
+    profile = UserProfile.objects.get(user=request.user)
+    profile.client_id = None
+    return render(request, 'mobile/settings.html')
+   
         
 def retrieve_queue(request, *args, **kwargs):
     '''
