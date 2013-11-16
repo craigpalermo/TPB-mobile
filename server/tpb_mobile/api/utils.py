@@ -61,15 +61,15 @@ def register_client(request):
     return HttpResponse(to_return, content_type="application/json")
         
         
-def retrieve_queue(request, uuid, client_id):
+def retrieve_queue(request, *args, **kwargs):
     '''
     runs a query to get all torrent records linked to user that matches user_id,
     then serializes the resulting queryset as json and returns it
     '''
     try:
-        profile = UserProfile.objects.get(uuid=uuid)
+        profile = UserProfile.objects.get(uuid=request.GET.get('uuid', ''))
         
-        if profile.client_id == client_id:
+        if profile.client_id == request.GET.get('client_id', ''):
             records = profile.queue.all()
             
             for i in records:
