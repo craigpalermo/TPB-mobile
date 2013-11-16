@@ -1,0 +1,11 @@
+BeautifulSoup==3.2.1
+Django==1.4.5
+South==0.8.3
+ThePirateBay==1.1.4
+beautifulsoup4==4.3.2
+dateutils==0.6.6
+django-extensions==1.2.5
+lxml==3.2.4
+purl==0.8
+python-dateutil==2.2
+six==1.4.1
