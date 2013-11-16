@@ -9,9 +9,8 @@ from django.contrib.auth.models import User
 from django.db import IntegrityError
 from models import UserProfile
 import settings
-import inspect
 from django.http import HttpResponseRedirect
-from utils import parse_torrent_page
+from utils import parse_torrent_page, get_results_length
 from api.utils import create_torrent_record, delete_torrent_record
 
 class SearchView(View):
@@ -40,15 +39,8 @@ class SearchView(View):
             search = t.search(search_string, category=category).order(ORDERS.SEEDERS.ASC)
             results = search.page(1)
             
-            # a hacky way of telling if the search returned any results or not
-            
-            count = 0
-            for i in results:
-                count += 1
-            
-            print count
-            if count == 0:
-                results = None
+            # set results to None if search didn't return anything
+            results = None if get_results_length(results) == 0 else results
 
             return render(request, self.template_name, {'form': form, 'results': results, 'torrent_form': torrent_form})
         else:          
